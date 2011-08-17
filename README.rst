@@ -63,7 +63,9 @@ There are 4 optional parameters you can set:
 + **password** *[None]*
 
 A full config dictionary to activate Redis_ backed sessions would look like
-this:
+this.
+
+::
 
     config = {
         'tools.sessions.on' : True,
