@@ -1,6 +1,8 @@
 import unittest
 import socket
 
+from cherrypy.test import webtest
+
 try:
     import redis
 
@@ -35,10 +37,11 @@ except socket.error:
 
 else:
 
-  class RedisSessionTest(unittest.TestCase):
+  class RedisSessionTest(webtest.WebCase):
 
-      def test_something(self):
-          self.assertTrue(True)
+      def test_index(self):
+        result = self.getPage('http://localhost:8080/')
+
 
 if __name__ == '__main__':
   unittest.main()
