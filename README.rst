@@ -19,12 +19,16 @@ Installation
 If you are not using pip_ yet. Install it and while you are at it consider
 using virtualenv_ too.
 
+::
+
     $ pip install cherrys
 
 redis-py_ and CherryPy_ are required dependencies hence will be installed if
 necessary.
 
-We recommend installing hiredis_ (a faster parser) as well.
+We recommend installing hiredis-py_ (a faster parser) as well.
+
+::
 
     $ pip install hiredis
 
@@ -41,3 +45,4 @@ Usage (and abusage)
 .. _pip: http://pip-installer.org
 .. _virtualenv: http://www.virtualenv.org
 .. _redis-py: https://github.com/andymccurdy/redis-py
+.. _hiredis-py: https://github.com/pietern/hiredis-py
