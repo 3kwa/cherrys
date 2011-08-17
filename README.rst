@@ -35,7 +35,43 @@ We recommend installing hiredis-py_ (a faster parser) as well.
 Usage (and abusage)
 ===================
 
+To tell CherryPy_ which backend to use, we need to specify the **storage_type**
+for the **sessions** **tool**. You may want to read more about CherryPy_
+configuration_.
 
+::
+
+    tools.sessions.storage_type : 'redis'
+
+But CherryPy_ doesn't know Redis_. Hence the first thing we need to do is add
+the cherrys **RedisSession** class to **cherrypy.lib.sessions**.
+
+::
+
+    import cherrys
+    cherrypy.lib.sessions.RedisSession = cherrys.RedisSession
+
+It is that simple!
+
+Config dictionary
+=================
+
+There are 4 optional parameters you can set:
++ **host** *[127.0.0.1]*
++ **port** *[6379]*
++ **db** *[0]*
++ **password** *[None]*
+
+A full config dictionary to activate Redis_ backed sessions would look like
+this:
+
+    config = {
+        'tools.sessions.on' : True,
+        'tools.sessions.host' : 'REDIS_HOST',
+        'tools.sessions.port' : 'REDIS_PORT',
+        'tools.sessions.db' : 'REDIS_DB',
+        'tools.sessions.password' : 'REDIS_PASSWORD'
+        }
 
 .. _CherryPy: http://www.cherrypy.org
 .. _PostgreSQL: http://www.postgresql.org
@@ -46,3 +82,4 @@ Usage (and abusage)
 .. _virtualenv: http://www.virtualenv.org
 .. _redis-py: https://github.com/andymccurdy/redis-py
 .. _hiredis-py: https://github.com/pietern/hiredis-py
+.. _configuration: http://docs.cherrypy.org/stable/concepts/config.html
