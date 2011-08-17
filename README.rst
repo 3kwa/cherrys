@@ -57,6 +57,7 @@ Config dictionary
 =================
 
 There are 4 optional parameters you can set:
+
 + **host** *[127.0.0.1]*
 + **port** *[6379]*
 + **db** *[0]*
