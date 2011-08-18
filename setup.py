@@ -12,6 +12,16 @@ setup(
     author = 'Eugene Van den Bulke',
     author_email = 'eugene.vandenbulke@gmail.com',
     url = 'http://github.com/3kwa/cherrys',
-    test_suite = 'test_cherrys'
-    install_requires = ['redis >= 2.4.9', 'cherrypy >= 3.2']
+    test_suite = 'test_cherrys',
+    install_requires = ['redis >= 2.4.9', 'cherrypy >= 3.2'],
+    classifiers = [
+        'Development Status :: 3 - Alpha',
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'License :: Freely Distributable',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Topic :: Database',
+        'Topic :: Internet :: WWW/HTTP :: Session',
+        'Framework :: CherryPy']
 )
