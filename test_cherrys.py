@@ -54,7 +54,7 @@ else:
               'tools.sessions.on' : True,
               'tools.sessions.storage_type' : 'redis'
           })
-          cherrypy.tree.mount(Root())
+          cherrypy.tree.mount(App())
           cherrypy.engine.start()
 
       def test_server_working(self):
@@ -90,8 +90,8 @@ else:
       def tearDown(self):
           cherrypy.engine.exit()
 
-class Root(object):
-    """ An basic application to test sessions """
+class App(object):
+    """ A basic application to test sessions """
 
     @cherrypy.expose
     def index(self):
