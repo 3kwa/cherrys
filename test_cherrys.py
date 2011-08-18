@@ -39,56 +39,58 @@ except socket.error:
 # all good to go we can test
 else:
 
-  import cherrys
-  cherrypy.lib.sessions.RedisSession = cherrys.RedisSession
+    import cherrys
+    cherrypy.lib.sessions.RedisSession = cherrys.RedisSession
 
-  class RedisSessionTest(webtest.WebCase):
+    class RedisSessionTest(webtest.WebCase):
 
-      interactive = False
+        interactive = False
 
-      def setUp(self):
-          # configuring CP instead of webCase (getPage - openUrl on port 8000)
-          cherrypy.config.update({
-              'server.socket_port' : 8000,
-              'log.screen' : False,
-              'tools.sessions.on' : True,
-              'tools.sessions.storage_type' : 'redis'
-          })
-          cherrypy.tree.mount(App())
-          cherrypy.engine.start()
+        @classmethod
+        def setUpClass(cls):
+            # configuring CP instead of webCase (getPage - openUrl on port 8000)
+            cherrypy.config.update({
+                'server.socket_port' : 8000,
+                'log.screen' : False,
+                'tools.sessions.on' : True,
+                'tools.sessions.storage_type' : 'redis'
+            })
+            cherrypy.tree.mount(App())
+            cherrypy.engine.start()
 
-      def test_server_working(self):
-          self.getPage('/')
-          self.assertStatus(200)
+        def test_server_working(self):
+            self.getPage('/')
+            self.assertStatus(200)
 
-      def test_deleting_non_existing_key_fails(self):
-          self.getPage('/delete')
-          self.assertStatus(500)
+        def test_deleting_non_existing_key_fails(self):
+            self.getPage('/delete')
+            self.assertStatus(500)
 
-      def test_deleting_stored_data(self):
-          self.getPage('/store')
-          self.assertStatus(200)
-          # first getPage call sets a cookie
-          # second getPage call needs to be aware of the cookie
-          self.getPage('/delete', self.cookies)
-          self.assertStatus(200)
+        def test_deleting_stored_data(self):
+            self.getPage('/store')
+            self.assertStatus(200)
+            # first getPage call sets a cookie
+            # second getPage call needs to be aware of the cookie
+            self.getPage('/delete', self.cookies)
+            self.assertStatus(200)
 
-      def test_storing_data(self):
-          self.getPage('/store')
-          self.assertStatus(200)
-          self.assertBody('redis')
+        def test_storing_data(self):
+            self.getPage('/store')
+            self.assertStatus(200)
+            self.assertBody('redis')
 
-      def test_retrieving_stored_data(self):
-          self.getPage('/retrieve')
-          self.assertStatus(500)
-          self.getPage('/store', self.cookies)
-          self.assertStatus(200)
-          self.assertBody('redis')
-          self.getPage('/retrieve', self.cookies)
-          self.assertStatus(200)
+        def test_retrieving_stored_data(self):
+            self.getPage('/retrieve')
+            self.assertStatus(500)
+            self.getPage('/store', self.cookies)
+            self.assertStatus(200)
+            self.assertBody('redis')
+            self.getPage('/retrieve', self.cookies)
+            self.assertStatus(200)
 
-      def tearDown(self):
-          cherrypy.engine.exit()
+        @classmethod
+        def tearDownClass(cls):
+            cherrypy.engine.exit()
 
 class App(object):
     """ A basic application to test sessions """
