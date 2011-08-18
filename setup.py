@@ -22,6 +22,5 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Database',
-        'Topic :: Internet :: WWW/HTTP :: Session',
-        'Framework :: CherryPy']
+        'Topic :: Internet :: WWW/HTTP']
 )
