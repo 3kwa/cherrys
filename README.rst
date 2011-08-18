@@ -70,6 +70,7 @@ this.
 
     config = {
         'tools.sessions.on' : True,
+        'tools.sessions.storage_type' : 'redis',
         'tools.sessions.host' : 'REDIS_HOST',
         'tools.sessions.port' : 'REDIS_PORT',
         'tools.sessions.db' : 'REDIS_DB',
