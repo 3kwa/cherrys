@@ -65,6 +65,14 @@ else:
           self.getPage('/delete')
           self.assertStatus(500)
 
+      def test_deleting_stored_data(self):
+          self.getPage('/store')
+          self.assertStatus(200)
+          # first getPage call sets a cookie
+          # second getPage call needs to be aware of the cookie
+          self.getPage('/delete', self.cookies)
+          self.assertStatus(200)
+
       def test_storing_data(self):
           self.getPage('/store')
           self.assertStatus(200)
@@ -73,10 +81,10 @@ else:
       def test_retrieving_stored_data(self):
           self.getPage('/retrieve')
           self.assertStatus(500)
-          self.getPage('/store')
+          self.getPage('/store', self.cookies)
           self.assertStatus(200)
           self.assertBody('redis')
-          self.getPage('/retrieve')
+          self.getPage('/retrieve', self.cookies)
           self.assertStatus(200)
 
       def tearDown(self):
@@ -97,6 +105,7 @@ class Root(object):
     @cherrypy.expose
     def delete(self):
         del cherrypy.session['data']
+        return 'deleted'
 
     @cherrypy.expose
     def retrieve(self):
