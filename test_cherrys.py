@@ -4,7 +4,7 @@ import socket
 import cherrypy
 from cherrypy.test import webtest
 
-# testing that redis-py is availbale and that we have a redis server running
+# testing that redis-py is available and that we have a redis server running
 try:
     import redis
 
