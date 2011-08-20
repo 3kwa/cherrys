@@ -36,7 +36,7 @@ class RedisSession(Session):
 
         cls.cache = redis.Redis(
             host=cls.host,
-            port=cls.port,
+            port=int(cls.port), # cherrys in charge of converting str to int
             db=cls.db,
             password=cls.password)
 
