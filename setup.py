@@ -15,12 +15,13 @@ setup(
     test_suite = 'test_cherrys',
     install_requires = ['redis >= 2.4.9', 'cherrypy >= 3.2'],
     classifiers = [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
+        'Framework :: CherryPy',
         'Intended Audience :: Developers',
         'License :: Freely Distributable',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Database',
-        'Topic :: Internet :: WWW/HTTP']
+        'Topic :: Internet :: WWW/HTTP :: Session']
 )
