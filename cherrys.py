@@ -36,12 +36,12 @@ class RedisSession(Session):
 
         cls.cache = redis.Redis(
             host=cls.host,
-            port=int(cls.port), # cherrys in charge of converting str to int
+            port=cls.port, # cherrys in charge of converting str to int
             db=cls.db,
             password=cls.password)
 
     def _exists(self):
-        return bool(self.cache.get(self.id))
+        return bool(self.cache.exists(self.id))
 
     def _load(self):
         try:
@@ -53,8 +53,8 @@ class RedisSession(Session):
     def _save(self, expiration_time):
 
         pickled_data = pickle.dumps(
-            [self._data, expiration_time,
-            pickle.HIGHEST_PROTOCOL])
+            (self._data, expiration_time),
+            pickle.HIGHEST_PROTOCOL)
 
         result = self.cache.setex(self.id, pickled_data, self.timeout * 60)
 

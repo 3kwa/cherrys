@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.3'
+version = '0.4'
 readme = open('README.rst').read()
 setup(
     name = 'cherrys',
@@ -15,7 +15,7 @@ setup(
     test_suite = 'test_cherrys',
     install_requires = ['redis >= 2.4.9', 'cherrypy >= 3.2'],
     classifiers = [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: CherryPy',
         'Intended Audience :: Developers',
