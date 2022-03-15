@@ -58,10 +58,21 @@ Config dictionary
 
 There are 4 optional parameters you can set:
 
-+ **host** *[127.0.0.1]*
-+ **port** *[6379]*
++ **host** *[127.0.0.1]* (when is_sentinel this is host for sentinel service)
++ **port** *[6379]* (when is_sentinel this is port for sentinel service)
++ **ssl** *[False]* (for both sentinel and redis)
++ **tls_skip_verify** *[False]* (for both sentinel and redis)
+
++ **is_sentinel** *[False]*
++ **sentinel_pass** *[None]*
++ **sentinel_service** *[None]*
+
 + **db** *[0]*
++ **prefix** *['cherrys_']* (prepended to session if, useful when ACLs are enabled)
++ **user** *[None]* (for old version of authentication can be set to empty string)
 + **password** *[None]*
+
+
 
 A full config dictionary to activate Redis_ backed sessions would look like
 this.
@@ -71,10 +82,38 @@ this.
     config = {
         'tools.sessions.on' : True,
         'tools.sessions.storage_type' : 'redis',
-        'tools.sessions.host' : 'REDIS_HOST',
-        'tools.sessions.port' : REDIS_PORT,
-        'tools.sessions.db' : REDIS_DB,
-        'tools.sessions.password' : 'REDIS_PASSWORD'
+
+        'tools.sessions.host': REDIS_HOST,
+        'tools.sessions.port': REDIS_PORT,
+
+        'tools.sessions.db': REDIS_DB,
+        'tools.sessions.prefix': REDIS_PREFIX,
+        'tools.sessions.user': REDIS_USER,
+        'tools.sessions.password': REDIS_PASS,
+        }
+
+A full config dictionary to activate RedisSentinelSSL_ backed sessions would look like
+this.
+
+::
+
+    config = {
+        'tools.sessions.on' : True,
+        'tools.sessions.storage_type' : 'redis',
+
+        'tools.sessions.host': REDIS_HOST,
+        'tools.sessions.port': REDIS_PORT,
+        'tools.sessions.ssl': True,
+        'tools.sessions.tls_skip_verify': True,
+
+        'tools.sessions.is_sentinel': True,
+        'tools.sessions.sentinel_pass': REDIS_SENTINEL_PASS,
+        'tools.sessions.sentinel_service': REDIS_SENTINEL_SERVICENAME,
+
+        'tools.sessions.db': REDIS_DB,
+        'tools.sessions.prefix': REDIS_PREFIX,
+        'tools.sessions.user': REDIS_USER,
+        'tools.sessions.password': REDIS_PASS,
         }
 
 .. _CherryPy: http://www.cherrypy.org
