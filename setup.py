@@ -7,6 +7,7 @@ setup(
     version = version,
     description = 'Redis backend for CherryPy sessions',
     long_description = readme,
+    long_description_content_type = 'text/x-rst',
     py_modules = ['cherrys'],
     license = 'MIT',
     author = 'Eugene Van den Bulke',

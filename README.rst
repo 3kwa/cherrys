@@ -126,3 +126,4 @@ this.
 .. _redis-py: https://github.com/andymccurdy/redis-py
 .. _hiredis-py: https://github.com/pietern/hiredis-py
 .. _configuration: http://docs.cherrypy.org/stable/concepts/config.html
+.. _RedisSentinelSSL: https://redis.io/topics/sentinel
