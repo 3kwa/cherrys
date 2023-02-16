@@ -139,8 +139,12 @@ Running unittests
 Unittests require a running redis-server on localhost:6379 setup without
 any authentication in place.
 
-Install pytest with `pip install pytest` into your current virtualenv.
-Then run `pytest` from your shell.
+Then install pytest into your current virtualenv and start it from your command line:
+
+::
+
+    $ pip install pytest
+    $ pytest
 
 
 .. _CherryPy: http://www.cherrypy.dev
