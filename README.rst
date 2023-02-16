@@ -56,22 +56,23 @@ It is that simple!
 Config dictionary
 =================
 
-There are 4 optional parameters you can set:
+There are a few optional parameters you can set:
 
 + **host** *[127.0.0.1]* (when is_sentinel this is host for sentinel service)
 + **port** *[6379]* (when is_sentinel this is port for sentinel service)
 + **ssl** *[False]* (for both sentinel and redis)
-+ **tls_skip_verify** *[False]* (for both sentinel and redis)
++ **db** *[0]*
++ **prefix** *[""]* (prepended to session id if given; useful when ACLs are enabled)
++ **user** *[None]* (for old version of authentication can be set to empty string)
++ **password** *[None]*
++ **url** *[None]* (alternative to host/port/ssl/db/user/password combination)
+
+Sentinel-related additional (optional) parameters:
 
 + **is_sentinel** *[False]*
 + **sentinel_pass** *[None]*
 + **sentinel_service** *[None]*
-
-+ **db** *[0]*
-+ **prefix** *['cherrys_']* (prepended to session if, useful when ACLs are enabled)
-+ **user** *[None]* (for old version of authentication can be set to empty string)
-+ **password** *[None]*
-
++ **tls_skip_verify** *[False]*
 
 
 A full config dictionary to activate Redis_ backed sessions would look like
@@ -90,7 +91,7 @@ this.
         'tools.sessions.prefix': REDIS_PREFIX,
         'tools.sessions.user': REDIS_USER,
         'tools.sessions.password': REDIS_PASS,
-        }
+    }
 
 A full config dictionary to activate RedisSentinelSSL_ backed sessions would look like
 this.
@@ -104,19 +105,45 @@ this.
         'tools.sessions.host': REDIS_HOST,
         'tools.sessions.port': REDIS_PORT,
         'tools.sessions.ssl': True,
-        'tools.sessions.tls_skip_verify': True,
-
-        'tools.sessions.is_sentinel': True,
-        'tools.sessions.sentinel_pass': REDIS_SENTINEL_PASS,
-        'tools.sessions.sentinel_service': REDIS_SENTINEL_SERVICENAME,
 
         'tools.sessions.db': REDIS_DB,
         'tools.sessions.prefix': REDIS_PREFIX,
         'tools.sessions.user': REDIS_USER,
         'tools.sessions.password': REDIS_PASS,
-        }
 
-.. _CherryPy: http://www.cherrypy.org
+        'tools.sessions.is_sentinel': True,
+        'tools.sessions.sentinel_pass': REDIS_SENTINEL_PASS,
+        'tools.sessions.sentinel_service': REDIS_SENTINEL_SERVICENAME,
+        'tools.sessions.tls_skip_verify': True,
+    }
+
+Configuration via redis URL
+===========================
+As a shortcut a URL to the redis server can be provided as well.
+
+::
+
+    import cherrys
+    config = {
+        'tools.sessions.on' : True,
+        # next setting removes the need for initializing `cherrypy.lib.sessions.RedisSession' above:
+        'tools.sessions.storage_class' : cherrys.RedisSession,
+        'tools.sessions.url': 'redis://your-name:your-pwd@redis-server:6379/2'
+    }
+
+The number at the end of the URL ("2") denotes the redis database to be used.
+
+Running unittests
+=================
+
+Unittests require a running redis-server on localhost:6379 setup without
+any authentication in place.
+
+Install pytest with `pip install pytest` into your current virtualenv.
+Then run `pytest` from your shell.
+
+
+.. _CherryPy: http://www.cherrypy.dev
 .. _PostgreSQL: http://www.postgresql.org
 .. _Memcached: http://memcached.org
 .. _Redis: http://redis.io
