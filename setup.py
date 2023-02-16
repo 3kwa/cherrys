@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.6.0a1'
+version = '0.6.0a2'
 readme = open('README.rst').read()
 setup(
     name='cherrys',

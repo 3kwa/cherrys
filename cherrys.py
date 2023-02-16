@@ -50,10 +50,10 @@ class RedisSession(Session):
 
         assert cls.prefix != cls.lock_prefix, "'prefix' must not be equal to 'lock_'"
 
-        if not cls.tls_skip_verify:
-            cls.ssl_cert_req = "required"
-
         if cls.is_sentinel:
+            if not cls.tls_skip_verify:
+                cls.ssl_cert_req = "required"
+
             sentinel = redis.Sentinel(
                 [(cls.host, cls.port)],
                 ssl=cls.ssl,
@@ -64,7 +64,8 @@ class RedisSession(Session):
                     "ssl_cert_reqs": cls.ssl_cert_req
                 },
                 username=cls.user,
-                password=cls.password)
+                password=cls.password
+            )
             cls.cache = sentinel.master_for(cls.sentinel_service)
         elif cls.url:
             cls.cache = redis.from_url(cls.url)
