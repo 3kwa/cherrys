@@ -1,6 +1,7 @@
 import socket
 import time
 import threading
+from unittest import mock
 
 import cherrys
 import cherrypy
@@ -101,6 +102,15 @@ class RedisSessionTest(helper.CPWebCase):
 
         self.assertStatus(200)
         self.assertBody('redis')
+
+    @mock.patch.object(cherrys.RedisSession, "lock_timeout", 1)
+    def test_session_lock_expires(self):
+        """Check that redis expires a session lock automatically after 1 second"""
+        # Wait for 2 secs just to be sure and avoid flaky tests:
+        self.getPage("/store?sleep=2")
+        # Grab assertion exception from body and check for correct server-side error message:
+        assert b"Cannot load data from unlocked session" in self.body
+        self.assertStatus(500)
 
 
 class RedisSessionTestViaUrl(RedisSessionTest):
