@@ -65,6 +65,7 @@ There are a few optional parameters you can set:
 + **prefix** *[""]* (prepended to session id if given; useful when ACLs are enabled)
 + **user** *[None]* (for old version of authentication can be set to empty string)
 + **password** *[None]*
++ **lock_timeout** *[None]* (None, or time in seconds until session lock expires)
 + **url** *[None]* (alternative to host/port/ssl/db/user/password combination)
 
 Sentinel-related additional (optional) parameters:
@@ -91,6 +92,7 @@ this.
         'tools.sessions.prefix': REDIS_PREFIX,
         'tools.sessions.user': REDIS_USER,
         'tools.sessions.password': REDIS_PASS,
+        'tools.sessions.lock_timeout: LOCK_TIME_SECONDS,
     }
 
 A full config dictionary to activate RedisSentinelSSL_ backed sessions would look like
@@ -110,6 +112,7 @@ this.
         'tools.sessions.prefix': REDIS_PREFIX,
         'tools.sessions.user': REDIS_USER,
         'tools.sessions.password': REDIS_PASS,
+        'tools.sessions.lock_timeout: LOCK_TIME_SECONDS,
 
         'tools.sessions.is_sentinel': True,
         'tools.sessions.sentinel_pass': REDIS_SENTINEL_PASS,

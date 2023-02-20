@@ -30,13 +30,14 @@ class RedisSession(Session):
     tls_skip_verify = False
     prefix = ""
     lock_prefix = "lock_"
+    lock_timeout = None   # None, or time in secs until session lock expires
     ssl_cert_req = None
     sentinel_pass = None
     sentinel_service = None
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.lock = None
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def setup(cls, **kwargs):
@@ -79,10 +80,15 @@ class RedisSession(Session):
                 password=cls.password
             )
 
+    @property
+    def locked(self):
+        return self.lock and self.lock.locked()
+
     def _exists(self):
         return bool(self.cache.exists(self.prefix + self.id))
 
     def _load(self):
+        assert self.locked, "Cannot load data from unlocked session"
         try:
             return pickle.loads(self.cache.get(self.prefix + self.id))
         except TypeError:
@@ -90,6 +96,7 @@ class RedisSession(Session):
             return None
 
     def _save(self, expiration_time):
+        assert self.locked, "Cannot save data into unlocked session"
         pickled_data = pickle.dumps((self._data, expiration_time), pickle.HIGHEST_PROTOCOL)
         result = self.cache.setex(self.prefix + self.id, self.timeout * 60, pickled_data)
 
@@ -97,15 +104,16 @@ class RedisSession(Session):
             raise AssertionError("Session data for id %r not set." % self.prefix + self.id)
 
     def _delete(self):
+        assert self.locked, "Cannot delete unlocked session"
         self.cache.delete(self.prefix + self.id)
 
     def acquire_lock(self):
         """Acquire an exclusive redis lock on the currently-loaded session data."""
-        self.locked = True
-        self.lock = self.cache.lock(self.lock_prefix + self.id)
+        self.lock = self.cache.lock(self.lock_prefix + self.id, timeout=self.lock_timeout)
         self.lock.acquire()
 
     def release_lock(self):
         """Release the lock on the currently-loaded session data."""
-        self.lock.release()
-        self.locked = False
+        if self.locked:  # lock might have expired already
+            self.lock.release()
+        self.lock = None
