@@ -1,3 +1,4 @@
 *.pyc
 cherrys.egg-info
 dist
+dump.rdb
